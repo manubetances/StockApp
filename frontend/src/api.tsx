@@ -21,3 +21,5 @@ export const searchCompanies = async (query: string) => {
         }
     }
 };
+
+// This is using the free version of financial modeling prep API
