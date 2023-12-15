@@ -1,33 +1,35 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import "./Card.css";
+import { CompanySearch } from "../../company";
+import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio";
 
 // Interface that passes the data needed for a card to be created and/or showed
 interface Props {
-    companyName: string;
-    ticker: string;
-    price: number;
+    id: string;
+    searchResult: CompanySearch;
+    onPortfolioCreate: (e: SyntheticEvent) => void;
 };
 
-const Card : React.FC<Props> = ({ // React FC to specify a react component with its props being Props
-    companyName,
-    ticker, 
-    price
-} : Props) : JSX.Element => { // return type, in this case a react component
+// React FC to specify a react component with its props being Props
+const Card : React.FC<Props> = ({ id, searchResult, onPortfolioCreate } : Props) : JSX.Element => { // return type, in this case a react component
     return (
         <div className="card">
             {/* Show the stock Icon */}
-            <img 
-                src=""
-                alt=""
-            />
+            <img alt="company logo"/>
             {/* Details such as name, price, description */}
             <div className="details">
                 <h2>
-                    {companyName} ({ticker})
+                    {searchResult.name} ({searchResult.symbol})
                 </h2>
-                <p>${price}</p>
+                <p>${searchResult.currency}</p>
             </div>
-            <p className="info">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p className="info">
+                {searchResult.exchangeShortName} - {searchResult.stockExchange}
+            </p>
+            <AddPortfolio 
+                onPortfolioCreate={onPortfolioCreate} 
+                symbol={searchResult.symbol}
+            />
         </div>
     )
 };
