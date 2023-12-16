@@ -5,6 +5,8 @@ import Search from './Components/Search/Search';
 import { CompanySearch } from './company';
 import { searchCompanies } from './api';
 import ListPortfolio from './Components/Portfolio/ListPortfolio/ListPortfolio';
+import Navbar from './Components/Navbar/Navbar';
+import Hero from './Components/Hero/Hero';
 
 function App() {
     //useState is used to track data or properties in our app
@@ -19,16 +21,26 @@ function App() {
         setSearch(e.target.value);
     };
 
-	//
+	// Function to create portfolio
 	const onPortfolioCreate = (e: any) => {
 		e.preventDefault();
 		// Check for duplicates, if a portfolio item value is the same as one already exists dont add it
 		const exists = portfolioValues.find((value) => value === e.target[0].value);
 		if(exists) return;
-		
+
 		// Create new array of portfolios, adding the stocks we select
 		const updatedPortfolio = [...portfolioValues, e.target[0].value];
 		setPortfolioValues(updatedPortfolio);
+	}
+
+	// 
+	const onPortfolioDelete = (e: any) => {
+		e.preventDefault();
+		// Get all the values from the portfolio
+		const removed = portfolioValues.filter((value) => {
+			return value !== e.target[0].value;
+		});
+		setPortfolioValues(removed);
 	}
 
 	// Function to hanfle on click events
@@ -47,13 +59,18 @@ function App() {
 
 	return (
 		<div className="App">
+			<Navbar />
+
 			<Search 
 				onSearchSubmit={onSearchSubmit} 
 				search={search} 
 				handleSearchChange={handleSearchChange} 
 			/>
 
-			<ListPortfolio portfolioValues={portfolioValues}/>
+			<ListPortfolio 
+				portfolioValues={portfolioValues} 
+				onPortfolioDelete={onPortfolioDelete}
+			/>
 			
 			<CardList 
 				searchResults={searchResult} 
